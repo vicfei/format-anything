@@ -1,0 +1,11 @@
+{
+  "name": "format-anything",
+  "version": "0.0.1",
+  "description": "Reverse engineer any file format — verified by roundtrip. Agent-driven discovery of unknown binary formats: hex → hypotheses → executable schema → codec → byte-equal roundtrip gate → FORMAT.md knowledge document.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vicfei/format-anything.git"
+  },
+  "keywords": ["reverse-engineering", "file-formats", "binary", "kaitai", "agent", "roundtrip", "mcp"]
+}
