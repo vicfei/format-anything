@@ -15,6 +15,8 @@ almost does declares its exact tolerances; what doesn't is visibly stamped
   [docs/FORMAT.md](docs/FORMAT.md)
 - 🗺️ Project plan (entry vehicle of the 2026 reverse-engineering wave,
   differentiated by verification): [docs/plan-v1.md](docs/plan-v1.md)
+- 🧭 Decision-complete design (lossless-by-construction codec, roundtrip
+  gate algorithm, LLM contract): [docs/design-v1.md](docs/design-v1.md)
 
 English | [简体中文](README.zh-CN.md)
 

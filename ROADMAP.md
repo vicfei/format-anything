@@ -12,7 +12,7 @@ citable knowledge asset. The wave returns analysis; we return proof.
       proofs) — the flag precedes the engine
 → [docs/FORMAT.md](docs/FORMAT.md) · [docs/plan-v1.md](docs/plan-v1.md)
 
-## V1 · Engine + proof (in planning)
+## V1 · Engine + proof (design complete 2026-11-22 → docs/design-v1.md)
 - [ ] observe: entropy profile · magic · strings · repeat-structure hints ·
       fingerprint stub
 - [ ] hypothesize: agent-driven (any LLM endpoint, local-friendly;
