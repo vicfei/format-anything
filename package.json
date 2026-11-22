@@ -1,11 +1,37 @@
 {
   "name": "format-anything",
-  "version": "0.0.1",
-  "description": "Reverse engineer any file format — verified by roundtrip. Agent-driven discovery of unknown binary formats: hex → hypotheses → executable schema → codec → byte-equal roundtrip gate → FORMAT.md knowledge document.",
+  "version": "0.1.0",
+  "description": "Reverse engineer any file format \u2014 verified by roundtrip. Agent-driven discovery of unknown binary formats: hex \u2192 hypotheses \u2192 executable schema \u2192 codec \u2192 byte-equal roundtrip gate \u2192 FORMAT.md knowledge document.",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vicfei/format-anything.git"
   },
-  "keywords": ["reverse-engineering", "file-formats", "binary", "kaitai", "agent", "roundtrip", "mcp"]
+  "keywords": [
+    "reverse-engineering",
+    "file-formats",
+    "binary",
+    "kaitai",
+    "agent",
+    "roundtrip",
+    "mcp"
+  ],
+  "type": "module",
+  "bin": {
+    "format-anything": "src/cli.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test tests/",
+    "selftest": "node seeds/selftest.cli.js"
+  },
+  "files": [
+    "src",
+    "seeds",
+    "docs",
+    "LICENSE",
+    "README.md"
+  ]
 }
