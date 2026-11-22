@@ -1,0 +1,125 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FORMAT.md — the open format for file-format knowledge documents</title>
+<style>
+body{max-width:860px;margin:2rem auto;padding:0 1.2rem;font:16px/1.65 Georgia,serif;color:#1a1a1a;background:#fdfdfb}
+h1{font-size:1.9rem;border-bottom:3px solid #b83f3f;padding-bottom:.4rem}
+h2{font-size:1.35rem;margin-top:2.2rem;border-bottom:1px solid #ddd;padding-bottom:.25rem}
+h3{font-size:1.1rem;margin-top:1.6rem}
+pre{background:#f4f2ec;border:1px solid #e0dcd0;border-radius:6px;padding:1rem;overflow-x:auto;font:13px/1.5 ui-monospace,monospace;white-space:pre-wrap}
+code,td{font-family:ui-monospace,monospace;font-size:.92em}
+td{border:1px solid #ddd;padding:.35rem .6rem;background:#fff}
+table{border-collapse:collapse;margin:.8rem 0}
+li{margin:.3rem 0}
+.note{background:#f6f3ff;border-left:4px solid #7b5cd6;padding:.7rem 1rem;font-style:italic}
+a{color:#b83f3f}
+.badge{display:inline-block;background:#b83f3f;color:#fff;padding:.15rem .6rem;border-radius:99px;font-size:.75rem;font-family:sans-serif;text-decoration:none;margin-right:.5rem}
+</style></head><body>
+<p><span class="badge">SPEC v0.1</span><a href="https://github.com/vicfei/format-anything">GitHub · vicfei/format-anything</a> — the reference implementation.</p>
+<h1>FORMAT.md — open format for file-format knowledge documents</h1>
+<p class=note>**Spec v0.1 — the flag before the engine.** A FORMAT.md document is a</p>
+<p class=note>machine-readable, evidence-linked, **roundtrip-verified** description of</p>
+<p class=note>a binary file format. It is to file formats what VIDEO.md is to video</p>
+<p class=note>breakdowns: an open, agent-consumable knowledge artifact any tool can</p>
+<p class=note>read, contribute to, and cite. Comments welcome via issues; stability</p>
+<p class=note>promise: v0 fields will not be renamed, only added.</p>
+<p>&gt;</p>
+<p class=note>Why open, why now: the 2026 reverse-engineering wave returns analysis</p>
+<p class=note>that is ephemeral and unverified. FORMAT.md makes format knowledge</p>
+<p class=note>**capital** — durable, cited, and proven. License of each document is</p>
+<p class=note>declared per-document (default CC-BY-4.0 for the document; sample files</p>
+<p class=note>remain their owners&#x27;).</p>
+<h2>1. Document structure</h2>
+<p>A FORMAT.md is Markdown for humans **with embedded machine blocks** in</p>
+<p>fenced `format-spec` code fences (JSON, schema below).</p>
+<pre>---
+format: &lt;slug&gt;                    # e.g. gbpokemon-save-gen1
+name: &lt;human name&gt;
+versions: [&lt;covered format versions&gt;]
+category: &lt;game-save|document|media|database|firmware|sensor|other&gt;
+status: verified-byte-equal | verified-semantic-equal | partial | hypothesis
+verified: &lt;YYYY-MM-DD or null&gt;
+license: CC-BY-4.0
+provenance:
+  discovered-by: &lt;agent/tool + version&gt;
+  samples: [{name, sha256, size, source-note}]   # evidence anchors
+references: [&lt;urls to prior art / docs&gt;]
+---
+
+## Identity
+magic / extensions / MIME / detection hints …
+
+## Layout
+Regions described in prose, each tied to spec fields …
+
+## Fields
+Per-region field notes, semantics, gotchas …
+
+## Roundtrip proof
+Verdict, tool+version, tolerance table applied, hashes …</pre>
+<p>The `format-spec` fence (the executable part):</p>
+<pre>{
+  &quot;specVersion&quot;: &quot;0.1&quot;,
+  &quot;endianness&quot;: &quot;little|big|mixed&quot;,
+  &quot;regions&quot;: [
+    {
+      &quot;name&quot;: &quot;header&quot;,
+      &quot;offset&quot;: 0,                       // number or expression string
+      &quot;length&quot;: 32,                      // number or expression string
+      &quot;repeat&quot;: null,                    // null | {&quot;until&quot;: &quot;&lt;expr&gt;&quot;} | {&quot;count&quot;: &quot;&lt;expr&gt;&quot;}
+      &quot;fields&quot;: [
+        {
+          &quot;name&quot;: &quot;magic&quot;,
+          &quot;type&quot;: &quot;u8[4]&quot;,
+          &quot;evidence&quot;: {&quot;sample&quot;: 0, &quot;offset&quot;: 0, &quot;hex&quot;: &quot;50 4F 4B 45&quot;}
+        },
+        { &quot;name&quot;: &quot;saveCount&quot;, &quot;type&quot;: &quot;u16&quot;, &quot;constraint&quot;: &quot;&lt; 3&quot; }
+      ]
+    }
+  ],
+  &quot;tolerances&quot;: [
+    // fields that legitimately differ on re-serialize — the honesty section
+    { &quot;field&quot;: &quot;header.checksum&quot;, &quot;reason&quot;: &quot;recomputed on encode&quot; },
+    { &quot;field&quot;: &quot;trailer.timestamp&quot;, &quot;reason&quot;: &quot;device clock at save time&quot; }
+  ],
+  &quot;codec&quot;: {
+    &quot;recompute&quot;: [&quot;header.checksum&quot;],    // encoder recomputes these
+    &quot;padding&quot;: &quot;zero|preserve|fixed:&lt;hex&gt;&quot;
+  }
+}</pre>
+<h2>2. The verdict scale (never fake certainty)</h2>
+<table><tr><td>status</td><td>meaning</td><td>proof required</td></tr></table>
+<table><tr><td>verified-byte-equal</td><td>decode(sample) → re-encode == sample, byte-for-byte</td><td>sha256 in + out equal, tolerance table empty or all-recomputed</td></tr></table>
+<table><tr><td>verified-semantic-equal</td><td>byte differences are exactly the declared tolerances</td><td>normalized-diff report listing every differing byte mapped to a tolerance entry</td></tr></table>
+<table><tr><td>partial</td><td>some regions roundtrip; others are hypotheses</td><td>per-region verdicts</td></tr></table>
+<table><tr><td>hypothesis</td><td>structure proposal only, no roundtrip attempted/passed</td><td>none — MUST be visibly marked; never presented as knowledge</td></tr></table>
+<p>A document claiming `verified-*` without its proof block is invalid by</p>
+<p>spec. Verification is reproducible: the proof names the tool and version,</p>
+<p>and the sample sha256 anchors the evidence.</p>
+<h2>3. Rules</h2>
+<li>**Evidence-linked**: every field claim SHOULD carry an evidence pointer</li>
+<p>   (sample + offset + observed bytes) — unevidenced claims must say so.</p>
+<p>2. **No invention**: unknown bytes are declared unknown (`&quot;type&quot;:</p>
+<p>   &quot;raw&quot;`), never guessed into meaning.</p>
+<p>3. **Tolerances are first-class**: what cannot byte-roundtrip is either a</p>
+<p>   declared tolerance (with reason) or downgrades the verdict. There is no</p>
+<p>   third option.</p>
+<p>4. **Machine-checkable**: a conforming verifier must be able to re-run the</p>
+<p>   roundtrip from the spec + a sample and reproduce the verdict.</p>
+<p>5. **Provenance is mandatory**: who/what discovered it, when, from which</p>
+<p>   samples.</p>
+<h2>4. Relationship to prior art</h2>
+<li>**Kaitai Struct** (`.ksy`, 4.7K★): the declarative spec language for</li>
+<p>  *known* formats, human-authored. FORMAT.md is the *discovery + proof*</p>
+<p>  layer for *unknown* formats; the `format-spec` block is designed for</p>
+<p>  `.ksy` import/export (V1.x of our tooling emits both). No conflict —</p>
+<p>  Kaitai is a target, not a rival.</p>
+<li>VIDEO.md (rea-video): the open-format-land-grab precedent this spec</li>
+<p>  mirrors for the format domain.</p>
+<h2>5. Conformance</h2>
+<p>A tool is FORMAT.md-conformant if it (a) reads the `format-spec` block,</p>
+<p>(b) re-runs the declared roundtrip, and (c) reproduces the stated verdict</p>
+<p>on the anchored samples. The reference implementation is</p>
+<p>[`format-anything`](https://github.com/vicfei/format-anything).</p>
+<p class="note">Comments and contributions: <a href="https://github.com/vicfei/format-anything/issues">issues</a>. Stability promise: v0 fields are never renamed, only added.</p>
+</body></html>
