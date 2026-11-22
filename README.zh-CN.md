@@ -9,7 +9,7 @@ schema，引擎跑唯一要紧的地面真值——**解码样本、重新编码
 **格式只有往返成功才算被逆向。**
 
 - 📐 **FORMAT.md**——文件格式知识文档的开放规范（v0，先于引擎立旗）：
-  [docs/FORMAT.md](docs/FORMAT.md)（英文）
+  [docs/FORMAT.md](docs/FORMAT.md)（英文）· **规范站：<https://vicfei.github.io/format-anything/>**
 - 🗺️ 项目规划（2026 逆向浪潮参战车，以验证差异化）：
   [docs/plan-v1.md](docs/plan-v1.md)（英文）
 

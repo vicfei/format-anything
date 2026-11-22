@@ -12,7 +12,7 @@ almost does declares its exact tolerances; what doesn't is visibly stamped
 
 - 📐 **FORMAT.md** — the open format for file-format knowledge documents
   (spec v0, planted before the engine):
-  [docs/FORMAT.md](docs/FORMAT.md)
+  [docs/FORMAT.md](docs/FORMAT.md) · **spec site: <https://vicfei.github.io/format-anything/>**
 - 🗺️ Project plan (entry vehicle of the 2026 reverse-engineering wave,
   differentiated by verification): [docs/plan-v1.md](docs/plan-v1.md)
 - 🧭 Decision-complete design (lossless-by-construction codec, roundtrip
