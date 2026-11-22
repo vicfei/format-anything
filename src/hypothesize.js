@@ -10,7 +10,7 @@ Rules:
 - top-level keys exactly: specVersion:"0.1", endianness:"little"|"big"|"mixed", regions:[], tolerances?:[], codec?:{recompute?:[], padding?}
 - region keys: name(snake_case), offset(number|expr), length(number|expr), repeat?:{count|until}, fields:[]
 - field types (closed set): u8 u16 u32 u64 s8 s16 s32 s64 f32 f64 bytes str zstr raw
-- "bytes"/"str" need count; expressions may reference earlier regions as $region.field and $region_len; ops + - * / % and comparisons; NOTHING else
+- "bytes"/"str" need count; expressions may reference earlier regions as $region.field, $region_len, and the whole file as $file_len; ops + - * / % and comparisons; NOTHING else
 - codec.recompute entries: {field:"region.field", rule:"sum8"|"sum16le"|"sum16be", range:[fromExpr, toExpr)}
 - tolerances: {field:"region.field", reason:"..."} for bytes that legitimately differ on re-encode
 - model ONLY what the evidence supports; leave the rest to raw gaps (captured automatically)

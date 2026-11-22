@@ -50,7 +50,7 @@ export function decode(spec, buf) {
   const spans = [];          // all modeled spans {start, end, path}
 
   for (const region of spec.regions) {
-    const baseExprCtx = { regions: regionValues, regionLens };
+    const baseExprCtx = { regions: regionValues, regionLens, fileLen: buf.length };
     let offset = typeof region.offset === "number" ? region.offset : evaluate(region.offset, baseExprCtx);
     if (offset > buf.length) throw new Error(`decode: region ${region.name} starts past end of file (offset ${offset} > ${buf.length})`);
     const length = typeof region.length === "number" ? region.length : evaluate(region.length, baseExprCtx);
@@ -63,7 +63,7 @@ export function decode(spec, buf) {
       const fields = [];
       const thisValues = {};
       for (const f0 of region.fields) {
-        const ctx = { regions: regionValues, regionLens, this: thisValues };
+        const ctx = { regions: regionValues, regionLens, this: thisValues, fileLen: buf.length };
         // never mutate the input spec — compute per-record field view locally
         const f = { ...f0 };
         if (f.count !== undefined) f._countVal = typeof f.count === "number" ? f.count : evaluate(f.count, ctx);

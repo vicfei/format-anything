@@ -45,6 +45,10 @@ export function evaluate(src, vars = {}) {
       if (!r || !(field in r)) throw new ExprError(`expr: unknown $${path}`);
       return r[field];
     }
+    if (path === "file_len") {
+      if (vars.fileLen === undefined) throw new ExprError("expr: $file_len not available here");
+      return vars.fileLen;
+    }
     if (path.endsWith("_len")) {
       const region = path.slice(0, -4);
       const lens = vars.regionLens || {};
@@ -112,6 +116,8 @@ export function checkRefs(src, knownRegions, currentRegion, fieldsOf) {
       if (region !== "this" && !knownRegions.includes(region)) throw new ExprError(`spec: $${path} references unknown region`);
       if (!knownRegions.includes(owner)) throw new ExprError(`spec: $${path} references unknown region`);
       if (!fieldsOf(owner).includes(field)) throw new ExprError(`spec: $${path} references unknown field`);
+    } else if (path === "file_len") {
+      // allowed anywhere
     } else if (path.endsWith("_len")) {
       const region = path.slice(0, -4);
       if (!knownRegions.includes(region)) throw new ExprError(`spec: $${path} references unknown region`);

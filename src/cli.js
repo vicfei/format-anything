@@ -7,14 +7,17 @@ import { analyze, TOOL_VERSION } from "./pipeline.js";
 import { runGate } from "./gate/roundtrip.js";
 import { validateSpec } from "./spec/validate.js";
 
-const [cmd, ...args] = process.argv.slice(2);
-
-function flag(name, def) {
-  const i = args.indexOf(`--${name}`);
-  if (i === -1) return def;
-  const v = args[i + 1];
-  return v && !v.startsWith("--") ? v : true;
+const [cmd, ...rawArgs] = process.argv.slice(2);
+const args = [];
+const flags = {};
+for (let i = 0; i < rawArgs.length; i++) {
+  if (rawArgs[i].startsWith("--")) {
+    const v = rawArgs[i + 1];
+    if (v !== undefined && !v.startsWith("--")) { flags[rawArgs[i].slice(2)] = v; i++; }
+    else flags[rawArgs[i].slice(2)] = true;
+  } else args.push(rawArgs[i]);
 }
+const flag = (name, def) => flags[name] ?? def;
 
 function die(msg, code = 2) { console.error(msg); process.exit(code); }
 
@@ -26,7 +29,7 @@ if (cmd === "analyze") {
   let worst = 0;
   for (const f of files) {
     const sample = readFileSync(f);
-    const result = await analyze({ sample, sampleName: f.split("/").pop(), context: flag("context", "") || "" });
+    const result = await analyze({ sample, sampleName: f.split("/").pop(), context: flag("context", "") });
     const md = result.formatMd ?? `# observe-only\n\n${result.reason}\n`;
     if (out) writeFileSync(`${out}/${f.split("/").pop()}.FORMAT.md`, md);
     console.log(`${f}: ${result.status}${result.iterations ? ` (${result.iterations} gate iterations)` : ""}`);

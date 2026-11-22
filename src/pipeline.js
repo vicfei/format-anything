@@ -10,6 +10,7 @@ export const TOOL_VERSION = "0.1.0";
 
 export async function analyze({ sample, sampleName = "sample.bin", context = "", callLLM, maxGateIterations = 3, meta = {} }) {
   const observeReport = observe(sample);
+  const llmLabel = callLLM ? "mock-llm" : `${process.env.FORMAT_LLM_MODEL || "llm"}${process.env.FORMAT_LLM_BASE_URL ? "@" + process.env.FORMAT_LLM_BASE_URL : ""}`;
   if (!llmEnabled() && !callLLM) {
     return { status: "hypothesis", observeReport, formatMd: null, reason: "FORMAT_LLM=off — observe-only run" };
   }
@@ -40,7 +41,7 @@ export async function analyze({ sample, sampleName = "sample.bin", context = "",
   }
 
   const formatMd = writeFormatMd({
-    spec, meta: { slug: meta.slug || sampleName.replace(/\W+/g, "-"), name: meta.name || sampleName, category: meta.category, versions: meta.versions, sampleName, references: meta.references },
+    spec, meta: { slug: meta.slug || sampleName.replace(/\W+/g, "-"), name: meta.name || sampleName, category: meta.category, versions: meta.versions, sampleName, references: meta.references, llm: llmLabel },
     tree: gate.tree, sample, gateResult: gate, toolVersion: TOOL_VERSION,
   });
   return { status: gate.verdict.status, gate, formatMd, observeReport, iterations: iterations + 1, spec };
