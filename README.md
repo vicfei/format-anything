@@ -32,7 +32,9 @@ sample + context → observe → hypothesize (any LLM, local-friendly)
 
 ## Status
 
-S1 complete (charter + FORMAT.md spec v0 + name lock). V1 engine in
+S1 complete
+> **Agent self-install** — paste this into any coding agent:
+> `Install format-anything from https://github.com/vicfei/format-anything (npm i -g format-anything), then run \`format-anything analyze <file>\` on my mystery file and show me the FORMAT.md it produces.` (charter + FORMAT.md spec v0 + name lock). V1 engine in
 planning — see [ROADMAP.md](ROADMAP.md).
 
 Complementary to [Kaitai Struct](https://github.com/kaitai-io/kaitai_struct)

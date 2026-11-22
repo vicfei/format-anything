@@ -27,7 +27,9 @@ schema，引擎跑唯一要紧的地面真值——**解码样本、重新编码
 
 ## 状态
 
-S1 完成（章程 + FORMAT.md 规范 v0 + 名称锁定）。V1 引擎规划中——见
+S1 完成
+> **Agent 自装**——把这句粘给任何 coding agent：
+> `从 https://github.com/vicfei/format-anything 安装 format-anything（npm i -g format-anything），然后对我的未知文件跑 format-anything analyze <file>，给我看它产出的 FORMAT.md。`（章程 + FORMAT.md 规范 v0 + 名称锁定）。V1 引擎规划中——见
 [ROADMAP.md](ROADMAP.md)。
 
 与 [Kaitai Struct](https://github.com/kaitai-io/kaitai_struct)（已知格式、
