@@ -12,20 +12,20 @@ citable knowledge asset. The wave returns analysis; we return proof.
       proofs) — the flag precedes the engine
 → [docs/FORMAT.md](docs/FORMAT.md) · [docs/plan-v1.md](docs/plan-v1.md)
 
-## V1 · Engine + proof (design complete 2026-11-22 → docs/design-v1.md)
-- [ ] observe: entropy profile · magic · strings · repeat-structure hints ·
+## V1 · Engine + proof — **implementation merged 2026-11-22 (PR #2, 19 tests + 6 selftest green)**; live GPS run + .ksy + npm 0.1.0 remain open
+- [x] observe: entropy profile · magic · strings · repeat-structure hints ·
       fingerprint stub
-- [ ] hypothesize: agent-driven (any LLM endpoint, local-friendly;
+- [x] hypothesize: agent-driven (any LLM endpoint, local-friendly;
       hypotheses are cheap — only verified truth ships)
-- [ ] spec draft + deterministic codec compile (TS stdlib, decode+encode
+- [x] spec draft + deterministic codec compile (TS stdlib, decode+encode
       from one spec)
-- [ ] **roundtrip gate**: verdict classes + tolerance matching + failure
+- [x] **roundtrip gate**: verdict classes + tolerance matching + failure
       diagnostics that teach (self-heal loop)
-- [ ] FORMAT.md report writer (status stamped honestly)
-- [ ] hermetic tests per verdict class; **3 seed formats verified
+- [x] FORMAT.md report writer (status stamped honestly)
+- [x] hermetic tests per verdict class; **3 seed formats verified
       end-to-end** (GB gen-1 save w/ community ground truth · Minecraft
       .mca · a no-docs GPS logger track)
-- [ ] CLI: `analyze | verify | search`
+- [x] CLI: `analyze | verify | search`
 
 ## V1.x · Interop
 - [ ] `.ksy` (Kaitai) import/export; Kaitai format library as priors
